@@ -32,7 +32,7 @@ function getUsers() {
 }
 
 function addUser() {
-  const name = document.getElementById("name").value;
+  const name = document.getElementById("firstName").value + document.getElementById("LastName").value;
   const email = document.getElementById("email").value;
   const address = document.getElementById("address").value;
   const addUserURL = "https://hamzailyas-nodejs.herokuapp.com/user";

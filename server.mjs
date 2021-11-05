@@ -7,89 +7,49 @@ let users = [];
 app.use(cors())
 
 
-app.use(express.json())
-app.use(morgan('short'))
+const responseDiv = document.getElementById("response-div");
 
-app.use((req, res, next) => {
+function getUsers() {
+  const URL = "";
 
-  console.log("a request came", req.body);
-  next()
-})
+  axios.get(URL).then((response) => {
+    const users = response.data;
+    console.log(users);
 
-app.use((req, res, next) => {
-  console.log("a request came", Date.now());
-  next()
-})
+    if (response.data.length === 0) {
+      //   alert("No Users");
+      responseDiv.innerHTML = "No Users";
+    } else {
+      const usersList = users.map((user) => {
+        return `<tr><td>${user.name}</td><td>${user.email}</td><td>${user.address}</td></tr>`;
+      });
 
-app.get('/users', (req, res) => {
-  res.send(users)
-})
-app.get('/user/:id', (req, res) => {
+      const resultDiv = document.getElementById("result-div");
 
-  if (users[req.params.id]) {
-    res.send(users[req.params.id])
-  } else {
-    res.send("user not found");
-  }
-
-})
-app.post('/user', (req, res) => {
-
-  if (!req.body.name || !req.body.email || !req.body.address) {
-    res.status(400).send("invalid data");
-  } else {
-    users.push({
-      name: req.body.name,
-      email: req.body.email,
-      address: req.body.address
-    })
-
-    res.send("users created");
-  }
-})
-app.put('/user/:id', (req, res) => {
-
-  if (users[req.params.id]) {
-
-    if (req.body.name) {
-      users[req.params.id].name = req.body.name
+      resultDiv.innerHTML = usersList.join("");
     }
-    if (req.body.email) {
-      users[req.params.id].email = req.body.email
-    }
-    if (req.body.address) {
-      users[req.params.id].address = req.body.address
-    }
+  });
+}
 
-    res.send(users[req.params.id])
+function addUser() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const address = document.getElementById("address").value;
+  const addUserURL = "https://hamzailyas-nodejs.herokuapp.com/user";
 
+  if (name === "" || email === "" || address === "") {
+    alert("Please Fill All the Fields");
   } else {
-    res.send("user not found");
+    const userData = {
+      name: name,
+      email: email,
+      address: address,
+    };
+
+    axios.post(addUserURL, userData).then((response) => {
+      //   alert("User Added");
+      responseDiv.innerHTML = "User Added";
+      location.reload();
+    });
   }
-
-
-
-})
-
-app.delete('/user/:id', (req, res) => {
-
-  if (users[req.params.id]) {
-
-    users[req.params.id] = {};
-    res.send("user deleted");
-
-  } else {
-    res.send("user not found");
-  }
-})
-
-app.get('/home', (req, res) => {
-  res.send('here is your home')
-})
-app.get('/', (req, res) => {
-  res.send('Hi I am a hello world Server program')
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+}

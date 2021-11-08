@@ -38,7 +38,7 @@ function addUser() {
   const addUserURL = "https://signup-form-nodejs.herokuapp.com/users";
 
   if (name === "" || email === "" || address === "") {
-    alert("KIndly fill all the fields");
+    alert("fill all the fields");
   } else {
     const userData = {
       name: name,
@@ -47,7 +47,7 @@ function addUser() {
     };
 
     axios.post(addUserURL, userData).then((response) => {
-      //   alert("User Added");
+      
       responseDiv.innerHTML = "User Added";
       location.reload();
     });

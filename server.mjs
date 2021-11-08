@@ -35,10 +35,10 @@ function addUser() {
   const name = document.getElementById("firstName").value + document.getElementById("LastName").value;
   const email = document.getElementById("email").value;
   const address = document.getElementById("address").value;
-  const addUserURL = "https://hamzailyas-nodejs.herokuapp.com/user";
+  const addUserURL = "https://signup-form-nodejs.herokuapp.com/users";
 
   if (name === "" || email === "" || address === "") {
-    alert("Please Fill All the Fields");
+    alert("KIndly fill all the fields");
   } else {
     const userData = {
       name: name,
@@ -53,3 +53,8 @@ function addUser() {
     });
   }
 }
+
+
+
+
+
